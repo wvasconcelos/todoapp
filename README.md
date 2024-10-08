@@ -1,5 +1,6 @@
 # Sample React App
-# By Will Davies Vasconcelos
+By Will Davies Vasconcelos
+
 To run this app, first start the server with: npm run dev
 Then, open a new terminal and on the client folder, run: npm start
 The app runs in dev mode on port 300, as follows:
