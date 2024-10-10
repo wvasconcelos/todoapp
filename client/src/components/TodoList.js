@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { MdDone } from "react-icons/md";
+import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Spinner from 'react-bootstrap/Spinner';
 import { useMutation } from '@apollo/client';
@@ -114,18 +115,18 @@ export default function TodoList(){
         });
     }
 
-    if ( loading ) return <Spinner animation="border" />;;
+    if ( loading ) return <Spinner animation="border" />;
     if ( error ) { console.log(error); return <p>Something went wrong!</p>; }
     
     return (
         <>
         <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-                <Form.Control type="text" placeholder="Enter To Do" onChange={e => setTitle(e.target.value)} value={title} />
+            <Form.Group className="mb-3 input-group">
+                <Form.Control type="text" className="form-control" placeholder="Enter To Do" onChange={e => setTitle(e.target.value)} value={title} />
+                <Button variant="outline-secondary" type="submit">
+                    {buttonTitle}
+                </Button>
             </Form.Group>
-            <Button variant="primary" type="submit">
-                {buttonTitle}
-            </Button>
         </Form>
         {!loading && !error && (
             <Table striped bordered hover>
@@ -141,7 +142,7 @@ export default function TodoList(){
             {data.todos.map((todo) =>(
                 <tr key={todo.id} className={`${todo.completed ? "text-decoration-line-through" : ""}`}>
                     <td>{todo.title}</td>
-                    <td><Button variant="warning" onClick={() => { 
+                    <td><Button variant={ (editTodo != null && editTodo.id === todo.id ? "default invisible" : "warning") } onClick={() => { 
                             setTitle(todo.title) 
                             setEditMode(true) 
                             setEditTodo(todo)}}>
@@ -150,8 +151,8 @@ export default function TodoList(){
                     </td>
                     <td><Button variant="danger" onClick={() => removeTodo(todo.id)}><FaTrash /></Button></td>
                     <td>
-                        <Button variant="success" onClick={() => markTodo(todo.id)}>
-                        <MdDone />
+                        <Button variant={ todo.completed ? "default" : "success"  } onClick={() => markTodo(todo.id)}>
+                        { todo.completed ? <MdDone /> : <MdCheckBoxOutlineBlank /> }
                         </Button>
                     </td>
                 </tr>
